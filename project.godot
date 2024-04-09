@@ -1,0 +1,21 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="AudioSyncPlayer Nodes"
+config/description="A set of Audio Player nodes that can be synchronized."
+run/main_scene="res://examples/audio_sync_player_nodes/scene.tscn"
+config/features=PackedStringArray("4.2")
+config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/audio_sync_player_nodes/plugin.cfg")
