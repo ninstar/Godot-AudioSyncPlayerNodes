@@ -1,5 +1,5 @@
 > [!WARNING]
-> As of Godot 4.3, the features of this addon are surpassed by [AudioStreamSynchronized](https://github.com/godotengine/godot/pull/64488).
+> As of Godot 4.3, the functionalities of this add-on are surpassed by [AudioStreamSynchronized](https://github.com/godotengine/godot/pull/64488).
 
 # <img src="./icon.png" width="24px"> AudioSyncPlayer Nodes
 
