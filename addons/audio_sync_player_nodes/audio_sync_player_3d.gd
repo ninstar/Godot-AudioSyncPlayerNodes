@@ -19,7 +19,7 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 @tool
-@icon("audio_sync_player_3d.svg")
+@icon("audio_sync_player_2d.svg")
 
 class_name AudioSyncPlayer3D extends AudioStreamPlayer3D
 
@@ -29,47 +29,46 @@ class_name AudioSyncPlayer3D extends AudioStreamPlayer3D
 ## 
 ## Plays positional sound in 3D space while keeping other
 ## [b]AudioStreamPlayer3D[/b] in sync. [member audio_players] are kept
-## in sync if one or more exceeds the [member desync_threshold], which is
+## in sync if one or more exceeds the [member desync_threshold],
 ## checked every [member sync_interval]. [br][br]
 ## The following properties are also synchronized if changed on this node:
 ## [member AudioStreamPlayer3D.pitch_scale],
 ## [member AudioStreamPlayer3D.playing],
 ## [member AudioStreamPlayer3D.stream_paused]
 ## and [member AudioStreamPlayer3D.autoplay]. [br][br]
-## See also [AudioSyncPlayer] to play a sound non-positionally.
+## See also [AudioSyncPlayer] to synchronize audios non-positionally.
 
 
 enum ProcessCallback {
-	## Synchronizes [member audio_players] during physics frames
-	## (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).
+	## Synchronizes [member audio_players] during physics frames.
+	## (See [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS])
 	PROCESS_PHYSICS,
-	## Synchronizes [member audio_players] during process frames
-	## (see [constant Node.NOTIFICATION_INTERNAL_PROCESS])
+	## Synchronizes [member audio_players] during process frames.
+	## (See [constant Node.NOTIFICATION_INTERNAL_PROCESS])
 	PROCESS_IDLE,
 }
 
 
-## [AudioStreamPlayer3D] that will have its playback position and properties
+## The [AudioStreamPlayer3D] that will have its playback position and properties
 ## synchronized to this node.
 @export var audio_players: Array[AudioStreamPlayer3D] = []: get = get_audio_players, set = set_audio_players
 
-## The interval in which [member audio_players] are synchronized, in seconds.
+## The interval in which audio players are synchronized, in seconds.
 @export_range(0.0, 4096.0, 0.001, "or_greater", "exp", "suffix:s") var sync_interval: float = 5.0: get = get_sync_interval, set = set_sync_interval
 
-## The threshold for how far behind or ahead one or more [member audio_players]
-## can be, in seconds.
-## An [b]audio_player[/b] is synchronized if its playback position
+## The threshold for how far behind or ahead audio players can be, in seconds.
+## Audio players are synchronized when the playback position of one of them
 ## exceeds this threshold.
 @export_range(0.001, 4096.0, 0.001, "or_greater", "exp", "suffix:s") var desync_threshold: float = 0.01: get = get_desync_threshold, set = set_desync_threshold
 
-## The process callback of the timer that synchronizes [member audio_players].
-## See [enum ProcessCallback].
+## The process callback of the timer that synchronizes the audio players.
+## (See [enum ProcessCallback])
 @export var process_callback := ProcessCallback.PROCESS_IDLE: get = get_process_callback, set = set_process_callback
 
 @onready var _sync_timer := Timer.new()
 
 
-## Synchronizes all [member audio_players].
+## Synchronizes all audio players.
 ## This method is called automatically by the process callback
 ## after every [member sync_interval].
 func sync() -> void:
@@ -90,8 +89,8 @@ func sync() -> void:
 			audio_players[i].seek(playback_position+delta)
 
 
-## Plays the audio and [member audio_player] in sync from the given
-## [param from_position], in seconds.
+## Plays all audio players in sync from the given position
+## ([param from_position]), in seconds.
 func play_in_sync(from_position: float = 0.0) -> void:
 	play(from_position)
 	for i: int in audio_players.size():
@@ -101,8 +100,8 @@ func play_in_sync(from_position: float = 0.0) -> void:
 		_sync_timer.start(sync_interval)
 
 
-## Sets and synchronizes the position from which audio and
-## [member audio_player] will be played, in seconds.
+## Sets the position from which the audio players will be
+## played in sync, in seconds.
 func seek_in_sync(to_position: float) -> void:
 	seek(to_position)
 	for i: int in audio_players.size():
@@ -110,7 +109,7 @@ func seek_in_sync(to_position: float) -> void:
 			audio_players[i].seek(to_position)
 
 
-## Stops the audio and [member audio_player] all at once.
+## Stops all audio players simultaneously.
 func stop_all() -> void:
 	stop()
 	for i: int in audio_players.size():
